@@ -1,7 +1,13 @@
+### Open
+* Open in VS code using devcontainers
+* Manually  build docker image 
+  * Run ```docker build -f .devcontainer/Dockerfile -t ros  .```
+  * Run ``` docker run -it --rm ros```
 ### Build
- * CTRL+SHIFT+B
- or
- * ```
+ * CTRL+SHIFT+B in vscode
+
+ * or 
+   ```
     source /opt/ros/jazzy/setup.bash && colcon build --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug
     ```
 ## Run
