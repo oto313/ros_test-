@@ -8,55 +8,9 @@
 #include <moveit/planning_interface/planning_response.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 
-int main(int argc, char **argv){
-  rclcpp::init(argc, argv);
-  auto const node = std::make_shared<rclcpp::Node>(
-      "aiva",
-      rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true));
-  using moveit::planning_interface::MoveGroupInterface;
-  auto move_group_interface = MoveGroupInterface(node, "nova2_group");
-  move_group_interface.clearPoseTargets();
 
-  move_group_interface.setPlannerId("APSConfigDefault");
-
-  move_group_interface.setGoalPositionTolerance(0.001);
-  move_group_interface.setGoalOrientationTolerance(0.001);
-  move_group_interface.setPlanningTime(15);
-  move_group_interface.setNumPlanningAttempts(10);
-  move_group_interface.setMaxVelocityScalingFactor(0.5);
-  move_group_interface.setMaxAccelerationScalingFactor(0.5);
-
-  geometry_msgs::msg::Pose pose_goal = move_group_interface.getCurrentPose().pose;
-
-
-  if (node->get_parameter("pos").as_int() == 0)
-  {
-    pose_goal.orientation.x = 0.74403;
-    pose_goal.orientation.y = 0.065131;
-    pose_goal.orientation.z = -0.073367;
-    pose_goal.orientation.w = 0.6609;
-    pose_goal.position.x = -0.26759;
-    pose_goal.position.y = -0.49364;
-    pose_goal.position.z = 0.2959;
-    RCLCPP_INFO(node->get_logger(), "Moving to left");
-  }
-  else
-  {
-    pose_goal.orientation.x = -1.1836 - 05;
-    pose_goal.orientation.y = 0.70713;
-    pose_goal.orientation.z = -0.70708;
-    pose_goal.orientation.w = -4.3729e-05;
-    pose_goal.position.x = 0.26648;
-    pose_goal.position.y = -0.51719;
-    pose_goal.position.z = 0.37347;
-    RCLCPP_INFO(node->get_logger(), "Moving to right");
-  }
-  move_group_interface.setPoseTarget(pose_goal);
-  move_group_interface.setStartStateToCurrentState();
-
-  auto statemy = *move_group_interface.getCurrentState();
-
-  auto const collision_object = [frame_id =
+void addObjects(moveit::planning_interface::MoveGroupInterface &move_group_interface){
+   auto const collision_object = [frame_id =
                                      move_group_interface.getPlanningFrame()]
   {
     moveit_msgs::msg::CollisionObject collision_object;
@@ -113,6 +67,56 @@ int main(int argc, char **argv){
   moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
   planning_scene_interface.applyCollisionObject(collision_object);
   planning_scene_interface.applyCollisionObject(table_collision_object);
+}
+
+int main(int argc, char **argv){
+  rclcpp::init(argc, argv);
+  auto const node = std::make_shared<rclcpp::Node>(
+      "aiva",
+      rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true));
+  using moveit::planning_interface::MoveGroupInterface;
+  auto move_group_interface = MoveGroupInterface(node, "nova2_group");
+
+  move_group_interface.setPlannerId("RRTkConfigDefault");
+
+  move_group_interface.setGoalPositionTolerance(0.001);
+  move_group_interface.setGoalOrientationTolerance(0.001);
+  move_group_interface.setPlanningTime(5);
+  move_group_interface.setNumPlanningAttempts(10);
+  move_group_interface.setMaxVelocityScalingFactor(0.5);
+  move_group_interface.setMaxAccelerationScalingFactor(0.5);
+
+  geometry_msgs::msg::Pose pose_goal;
+
+
+  if (node->get_parameter("pos").as_int() == 0)
+  {
+    pose_goal.orientation.x = 0.74403;
+    pose_goal.orientation.y = 0.065131;
+    pose_goal.orientation.z = -0.073367;
+    pose_goal.orientation.w = 0.6609;
+    pose_goal.position.x = -0.26759;
+    pose_goal.position.y = -0.49364;
+    pose_goal.position.z = 0.2959;
+    RCLCPP_INFO(node->get_logger(), "Moving to left");
+  }
+  else
+  {
+    pose_goal.orientation.x = -1.1836 - 05;
+    pose_goal.orientation.y = 0.70713;
+    pose_goal.orientation.z = -0.70708;
+    pose_goal.orientation.w = -4.3729e-05;
+    pose_goal.position.x = 0.26648;
+    pose_goal.position.y = -0.51719;
+    pose_goal.position.z = 0.37347;
+    RCLCPP_INFO(node->get_logger(), "Moving to right");
+  }
+  move_group_interface.setPoseTarget(pose_goal);
+  // move_group_interface.setStartStateToCurrentState();
+
+  // auto statemy = *move_group_interface.getCurrentState();
+  addObjects(move_group_interface);
+ 
   // Create a plan to that target pose
   auto const [success, plan] = [&move_group_interface]
   {
@@ -140,5 +144,6 @@ int main(int argc, char **argv){
   {
     RCLCPP_ERROR(node->get_logger(), "Planing failed!");
   }
+  rclcpp::shutdown();
   return 0;
 }
