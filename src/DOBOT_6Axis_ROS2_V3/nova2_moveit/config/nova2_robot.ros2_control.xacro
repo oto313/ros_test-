@@ -7,7 +7,7 @@
             <hardware>
                 <!-- By default, set up controllers for simulation. This won't work on real hardware -->
                 <plugin>mock_components/GenericSystem</plugin>
-            </hardware>jkhk
+            </hardware>
             <joint name="joint1">
                 <command_interface name="position"/>
                 <state_interface name="position">

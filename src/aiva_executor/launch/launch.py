@@ -1,24 +1,9 @@
 #!/usr/bin/env -S ros2 launch
 """Launch C++ example for following a target"""
 
-from os import path
-from typing import List
-
-import yaml
-from ament_index_python.packages import get_package_share_directory
-from launch_ros.actions import Node
-from launch_ros.substitutions import FindPackageShare
-
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import (
-    Command,
-    FindExecutable,
-    LaunchConfiguration,
-    PathJoinSubstitution,
-)
-import os
+from launch_ros.actions import Node
+from moveit_configs_utils import MoveItConfigsBuilder
 def generate_launch_description() -> LaunchDescription:
     # Declare all launch arguments
     # declared_arguments = generate_declared_arguments()
@@ -65,7 +50,12 @@ def generate_launch_description() -> LaunchDescription:
     #         ],
     #     ),
     # ]
-
+    moveit_config = (
+        MoveItConfigsBuilder("nova2_robot", package_name="nova2_moveit")
+        .planning_pipelines(pipelines=["ompl"])
+        .trajectory_execution(file_path="config/moveit_controllers.yaml")
+        .to_moveit_configs()
+    )
     # List of nodes to be launched
     nodes = [
         # Run the example node (C++)
@@ -75,6 +65,7 @@ def generate_launch_description() -> LaunchDescription:
             output="log",
             parameters=[
                 {"use_sim_time": True},
+                moveit_config.robot_description_kinematics,
             ],
         ),
     ]

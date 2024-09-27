@@ -9,6 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(moveit_visual_tools REQUIRED)
 
 add_executable(aiva_executor src/aiva_executor.cpp)
 target_include_directories(aiva_executor PUBLIC
@@ -18,6 +19,7 @@ target_compile_features(aiva_executor PUBLIC c_std_99 cxx_std_17)  # Require C99
 ament_target_dependencies(
   aiva_executor
   "moveit_ros_planning_interface"
+    "moveit_visual_tools"
   "rclcpp"
 ) 
 

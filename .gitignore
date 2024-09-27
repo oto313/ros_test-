@@ -5,3 +5,5 @@ bin/
 lib/
 install/
 log/
+src/graph_msgs/
+src/rviz_visual_tools/
