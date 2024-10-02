@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<robot name="nova2_with_gripper" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Include the robot URDF -->
+  <xacro:include filename="nova2_robot.urdf" />
+
+  <!-- Include the gripper URDF -->
+  <xacro:include filename="$(find gripper_pgc_description)/urdf/gripper_pgc.xacro" />
+
+  <!-- Connect the gripper to the robot's end effector (Link6) -->
+  <joint name="gripper_joint" type="fixed">
+    <parent link="Link6"/>
+    <child link="gripper_base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 -1.5708"/>
+  </joint>
+
+</robot>

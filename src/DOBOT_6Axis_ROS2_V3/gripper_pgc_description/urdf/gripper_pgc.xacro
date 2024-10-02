@@ -1,0 +1,101 @@
+<?xml version="1.0" ?>
+<robot name="gripper_pgc" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find gripper_pgc_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find gripper_pgc_description)/urdf/gripper_pgc.trans" />
+<link name="gripper_base_link">
+  <inertial>
+    <origin xyz="-5.809776703091203e-09 5.051935477190558e-05 0.0398168455127548" rpy="0 0 0"/>
+    <mass value="1.786615911360463"/>
+    <inertia ixx="0.001547" iyy="0.001445" izz="0.000792" ixy="-0.0" iyz="2e-06" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://gripper_pgc_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="steel_satin"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://gripper_pgc_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="left_1">
+  <inertial>
+    <origin xyz="0.0046630280956114776 -0.014845239497245508 0.04453512941530631" rpy="0 0 0"/>
+    <mass value="0.13417714475318895"/>
+    <inertia ixx="0.000161" iyy="0.000161" izz="1.2e-05" ixy="2e-06" iyz="4e-06" ixz="3e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.01085 0.0 -0.0793" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://gripper_pgc_description/meshes/left_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="steel_satin"/>
+  </visual>
+  <collision>
+    <origin xyz="0.01085 0.0 -0.0793" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://gripper_pgc_description/meshes/left_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="right_1">
+  <inertial>
+    <origin xyz="-0.010772104205448 0.01494078259277849 0.04626694299321167" rpy="0 0 0"/>
+    <mass value="0.13778952772229328"/>
+    <inertia ixx="0.000175" iyy="0.000182" izz="1.8e-05" ixy="2e-06" iyz="-5e-06" ixz="3.9e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.01085 0.0 -0.0793" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://gripper_pgc_description/meshes/right_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="steel_satin"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.01085 0.0 -0.0793" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://gripper_pgc_description/meshes/right_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="stylus_frame_1">
+  <inertial>
+    <origin xyz="-0.00033322705489337995 0.0021095066595683883 0.005748079976226839" rpy="0 0 0"/>
+    <mass value="0.0024609401690843424"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+</link>
+
+<joint name="left_joint" type="prismatic">
+  <origin xyz="-0.01085 0.0 0.0793" rpy="0 0 0"/>
+  <parent link="gripper_base_link"/>
+  <child link="left_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+  <limit upper="0.0" lower="0.0" effort="100" velocity="100"/>
+  <mimic joint="right_joint" multiplier="-1"/>
+</joint>
+
+<joint name="right_joint" type="prismatic">
+  <origin xyz="0.01085 0.0 0.0793" rpy="0 0 0"/>
+  <parent link="gripper_base_link"/>
+  <child link="right_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+  <limit upper="-0.013" lower="0.000" effort="100" velocity="100"/>
+  
+</joint>
+
+<joint name="Rigid 10" type="fixed">
+  <origin xyz="-0.032368 0.018 0.116026" rpy="0 -0.523599 0"/>
+  <parent link="right_1"/>
+  <child link="stylus_frame_1"/>
+</joint>
+
+</robot>
