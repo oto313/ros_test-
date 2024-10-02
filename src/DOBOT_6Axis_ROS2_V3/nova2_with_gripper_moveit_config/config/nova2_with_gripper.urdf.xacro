@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="nova2_with_gripper">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import nova2_with_gripper urdf file -->
+    <xacro:include filename="$(find dobot_rviz)/urdf/nova2_with_pgc-50-35.xacro" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="nova2_with_gripper.ros2_control.xacro" />
+
+
+    <xacro:nova2_with_gripper_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
+
+</robot>

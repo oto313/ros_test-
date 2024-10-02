@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: dobot_rviz
+    relative_path: urdf/nova2_with_pgc-50-35.xacro
+  srdf:
+    relative_path: config/nova2_with_gripper.srdf
+  package_settings:
+    author_name: Oto Dusek
+    author_email: oto.dusek@ysoft.com
+    generated_timestamp: 1727764214
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
