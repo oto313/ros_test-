@@ -8,7 +8,7 @@ controller_manager:
 
 
     gripper_controller:
-      type: parallel_gripper_action_controller/GripperActionController
+      type: position_controllers/GripperActionController
 
 
     joint_state_broadcaster:
@@ -30,4 +30,4 @@ arm_controller:
       - velocity
 gripper_controller:
   ros__parameters:
-    joint: right_joint
+    joint: left_joint

@@ -73,23 +73,24 @@
     <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="0.0" ixz="0.0"/>
   </inertial>
 </link>
-
+<link name="gripper_middle">
+</link>
 <joint name="left_joint" type="prismatic">
   <origin xyz="-0.01085 0.0 0.0793" rpy="0 0 0"/>
   <parent link="gripper_base_link"/>
   <child link="left_1"/>
   <axis xyz="0.0 1.0 0.0"/>
-  <limit upper="0.0" lower="0.0" effort="100" velocity="100"/>
-  <mimic joint="right_joint" multiplier="-1"/>
+  <limit upper="0.013" lower="0.0" effort="20" velocity="0.2"/>
+
 </joint>
 
 <joint name="right_joint" type="prismatic">
   <origin xyz="0.01085 0.0 0.0793" rpy="0 0 0"/>
   <parent link="gripper_base_link"/>
   <child link="right_1"/>
-  <axis xyz="0.0 1.0 0.0"/>
-  <limit upper="-0.013" lower="0.000" effort="100" velocity="100"/>
-  
+  <axis xyz="0.0 -1.0 0.0"/>
+  <limit upper="0.013" lower="0.000" effort="20" velocity="0.2"/>
+    <mimic joint="left_joint" multiplier="1"/>
 </joint>
 
 <joint name="Rigid 10" type="fixed">
@@ -98,4 +99,9 @@
   <child link="stylus_frame_1"/>
 </joint>
 
+<joint name="gripper_middle_joint" type="fixed">
+  <origin xyz="-0.025 0 0.19" rpy="0 -0.523599 0"/>
+  <parent link="gripper_base_link"/>
+  <child link="gripper_middle"/>
+</joint>
 </robot>
