@@ -7,3 +7,6 @@ install/
 log/
 src/graph_msgs/
 src/rviz_visual_tools/
+src/moveit/geometric_shapes/
+src/moveit/moveit_msgs/
+src/moveit/moveit_resources/
