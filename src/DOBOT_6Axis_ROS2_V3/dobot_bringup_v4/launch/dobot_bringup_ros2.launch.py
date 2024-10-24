@@ -19,15 +19,15 @@ node_info = json_data["node_info"]
 
 # ip_address = json_data["node_info"][current_robot -
 #                                     1]["ip_address"]    # robot IP
-# robot_type = json_data["node_info"][current_robot -
-#                                     1]["robot_type"]  # robot type
+robot_type = json_data["node_info"][current_robot -
+                                    1]["robot_type"]  # robot type
 trajectory_duration = json_data["node_info"][current_robot -
                                              1]["trajectory_duration"]
 robot_node_name = json_data["node_info"][current_robot -
                                          1]["robot_node_name"]
-ip_address = os.getenv("IP_address")
+ip_address = os.getenv("AivaRosBridgeOptions__RobotIp")
              
-robot_type = os.getenv("DOBOT_TYPE")
+# robot_type = os.getenv("DOBOT_TYPE")
 
 
 dobot_ros2_params = [
@@ -40,7 +40,7 @@ dobot_ros2_params = [
 
 
 def generate_launch_description():
-
+    print(ip_address)
     return LaunchDescription([
         launch_ros.actions.Node(
             package='cr_robot_ros2',

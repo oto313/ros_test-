@@ -47,8 +47,8 @@ CRRobotRos2::CRRobotRos2(std::string name) : rclcpp::Node("dobot_bringup_ros2"),
     const auto goal = goal_handle->get_goal();
     this->gripperPosition = goal->command.position;
     GripperState state;
-    auto position = -goal->command.position; // because of URDF
-
+    auto position = goal->command.position; // because of URDF
+    RCLCPP_INFO(this->get_logger(), "Received position for gripper %f", position);
     if(position < 0.001){
         RCLCPP_INFO(this->get_logger(), "Opening gripper");
         state = GripperState::Opened;

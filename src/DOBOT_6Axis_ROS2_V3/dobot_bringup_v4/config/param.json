@@ -3,16 +3,10 @@
     "current_robot": 1,
     "node_info": [
         {
-            "ip_address": "192.168.5.1",
-            "robot_type": "cr5",
+            "ip_address": "10.0.5.115",
+            "robot_type": "nova2",
             "trajectory_duration": 0.3,
             "robot_node_name": "dobot_bringup_ros2"
-        },
-        {
-            "ip_address": "192.168.1.7",
-            "robot_type": "cr5",
-            "trajectory_duration": 0.3,
-            "robot_node_name": "robot_node_name2"
         }
     ]
 }
