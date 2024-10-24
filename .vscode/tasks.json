@@ -6,7 +6,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "(source /opt/ros/jazzy/setup.bash ) && colcon build --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=\"--param ggc-min-expand=20\"",
+            "command": "bash ros_build.sh",
             "problemMatcher": [],
             "group": {
                 "kind": "build",

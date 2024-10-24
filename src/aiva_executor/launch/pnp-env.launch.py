@@ -2,21 +2,29 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess
+from launch.actions import ExecuteProcess, DeclareLaunchArgument
+from launch.conditions import IfCondition, UnlessCondition
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from moveit_configs_utils import MoveItConfigsBuilder
-
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
+    use_hw_robot_argument = DeclareLaunchArgument(
+        'use_hw_robot',
+        default_value='false'
+    )
+    use_hw_robot_condition=IfCondition(LaunchConfiguration('use_hw_robot'))
+    not_use_hw_robot_condition=UnlessCondition(LaunchConfiguration('use_hw_robot'))
+    
     moveit_config = (
         MoveItConfigsBuilder("nova2_with_gripper")
         .planning_pipelines(pipelines=["ompl"])
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
         .to_moveit_configs()
     )
-
-    # Load  ExecuteTaskSolutionCapability so we can execute found solutions in simulation
-    move_group_capabilities = {"capabilities": ""}
+    
     move_group_configuration = {
         "publish_robot_description_semantic": True,
         "allow_trajectory_execution": True,
@@ -97,7 +105,8 @@ def generate_launch_description():
         executable='joint_state_publisher_gui',
         name='joint_state_publisher_gui',
         output='screen',
-        parameters=[moveit_config.robot_description])
+        parameters=[moveit_config.robot_description],
+        condition=not_use_hw_robot_condition)
     # # Load controllers
     load_controllers = []
     for controller in [
@@ -109,11 +118,22 @@ def generate_launch_description():
                 cmd=["ros2 run controller_manager spawner {}".format(controller)],
                 shell=True,
                 output="screen",
+                condition=not_use_hw_robot_condition
             )
         ]
 
+    dobot_launch_file = os.path.join(
+        get_package_share_directory('cr_robot_ros2'),
+        'launch',
+        'dobot_bringup_ros2.launch.py'
+    )
     return LaunchDescription(
         [
+            use_hw_robot_argument,
+            IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(dobot_launch_file),
+            condition=use_hw_robot_condition
+        ),
             rviz_node,
             static_tf,
             robot_state_publisher,

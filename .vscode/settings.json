@@ -6,4 +6,5 @@
     "python.analysis.extraPaths": [
         "/opt/ros/jazzy/lib/python3.12/site-packages"
     ],
+    "pylint.args": ["--disable=C0116", "--disable=C0115", "--disable=C0114", "--disable=W0718"]
 }

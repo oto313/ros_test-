@@ -20,7 +20,9 @@ RUN apt-get update && apt install -y \
      ros-jazzy-launch-pytest ros-jazzy-moveit-resources ros-jazzy-rmf-utils \
      ros-jazzy-ros2-control ros-jazzy-warehouse-ros-sqlite ros-jazzy-position-controllers \
      ros-jazzy-stomp ros-jazzy-ompl
-RUN echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
 
-RUN echo "source /home/ws/install/setup.bash" >> ~/.bashrc
+RUN pip install grpcio-tools dependency-injector dynaconf dishka --break-system-packages
+
+RUN echo "source /opt/ros/jazzy/setup.bash\n\
+source /home/ws/install/setup.bash\n" >> ~/.bashrc
 CMD ["/bin/bash"]

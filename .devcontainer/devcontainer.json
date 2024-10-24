@@ -25,7 +25,8 @@
     "containerEnv": {
         "DISPLAY": "unix:0",
         "ROS_AUTOMATIC_DISCOVERY_RANGE": "LOCALHOST",
-        "ROS_DOMAIN_ID": "42"
+        "ROS_DOMAIN_ID": "42",
+        "AivaRosBridgeOptions__RobotIp": "10.0.5.115"
     },
     "runArgs": [
         "--net=host",
